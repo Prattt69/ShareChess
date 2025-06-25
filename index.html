@@ -69,7 +69,7 @@
   <div class="meta" id="puzzleMeta"></div>
   <div id="board"></div>
   <div class="actions">
-    <button onclick="loadHardcodedPuzzle()">🔁 Load Puzzle</button>
+    <button onclick="loadLichessPuzzle()">🔁 Load Puzzle</button>
     <button onclick="sharePuzzle()">🔗 Share This Puzzle</button>
     <div id="copied">✅ Link copied!</div>
   </div>
@@ -79,28 +79,31 @@
   <script>
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
-    function loadHardcodedPuzzle() {
-      console.log("Loading puzzle...");
-      if (typeof Chess === 'undefined' || typeof Chessboard === 'undefined') {
-        console.error("Chess.js or Chessboard.js not loaded correctly.");
-        document.getElementById("status").textContent = "Failed to load puzzle. Try again later.";
-        return;
+    async function loadLichessPuzzle() {
+      document.getElementById("status").textContent = "Loading puzzle...";
+      try {
+        const res = await fetch("https://lichess.org/api/puzzle/daily");
+        const data = await res.json();
+        const puzzle = data.puzzle;
+        const game = data.game;
+
+        startFen = game.fen;
+        solution = puzzle.solution;
+        moveIndex = 0;
+
+        gameObj = new Chess(startFen);
+        board = Chessboard("board", {
+          position: startFen,
+          draggable: true,
+          onDrop: onDrop
+        });
+
+        document.getElementById("status").textContent = "Solve the puzzle!";
+        document.getElementById("puzzleMeta").textContent = `ID: ${puzzle.id} | Rating: ${puzzle.rating}`;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").textContent = "Failed to load puzzle.";
       }
-
-      startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
-      solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
-      moveIndex = 0;
-
-      gameObj = new Chess(startFen);
-
-      board = Chessboard("board", {
-        position: startFen,
-        draggable: true,
-        onDrop: onDrop
-      });
-
-      document.getElementById("status").textContent = "Solve the puzzle!";
-      document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;
     }
 
     function onDrop(source, target) {
@@ -137,13 +140,7 @@
       });
     }
 
-    window.addEventListener('DOMContentLoaded', loadHardcodedPuzzle);
-    setTimeout(() => {
-      if (!document.getElementById("board").innerHTML.trim()) {
-        console.log("Fallback: manually invoking puzzle load...");
-        loadHardcodedPuzzle();
-      }
-    }, 300);
+    window.addEventListener('DOMContentLoaded', loadLichessPuzzle);
   </script>
 </body>
 </html>
