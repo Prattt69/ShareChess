@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ShareChess.com - Daily Puzzle</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -34,8 +34,9 @@
   <div id="board"></div>
   <div class="status" id="status"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
+  <script src="https://unpkg.com/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const puzzle = {
@@ -51,7 +52,6 @@
         draggable: true,
         onDrop: (source, target) => {
           const move = game.move({ from: source, to: target, promotion: 'q' });
-
           if (move === null) return 'snapback';
 
           const expectedMove = new Chess(puzzle.fen);
