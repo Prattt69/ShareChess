@@ -81,20 +81,33 @@
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
     function loadHardcodedPuzzle() {
-      startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
-      solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
-      moveIndex = 0;
+      console.log('Loading hardcoded puzzle...');
+      try {
+        if (typeof Chess === 'undefined' || typeof Chessboard === 'undefined') {
+          document.getElementById("status").textContent = "Error: Puzzle libraries not loaded.";
+          console.error("Chess.js or Chessboard.js not defined.");
+          return;
+        }
 
-      gameObj = new Chess(startFen);
+        startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
+        solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
+        moveIndex = 0;
 
-      board = Chessboard("board", {
-        position: startFen,
-        draggable: true,
-        onDrop: onDrop
-      });
+        gameObj = new Chess(startFen);
 
-      document.getElementById("status").textContent = "Solve the puzzle!";
-      document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;
+        board = Chessboard("board", {
+          position: startFen,
+          draggable: true,
+          onDrop: onDrop
+        });
+
+        document.getElementById("status").textContent = "Solve the puzzle!";
+        document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;
+        console.log('Puzzle loaded.');
+      } catch (err) {
+        console.error('Error while loading puzzle:', err);
+        document.getElementById("status").textContent = "Failed to load puzzle. Check console.";
+      }
     }
 
     function onDrop(source, target) {
@@ -134,9 +147,10 @@
     window.addEventListener('DOMContentLoaded', loadHardcodedPuzzle);
     setTimeout(() => {
       if (!document.getElementById("board").innerHTML.trim()) {
+        console.log('Fallback triggered: loading puzzle again...');
         loadHardcodedPuzzle();
       }
-    }, 150);
+    }, 300);
   </script>
 </body>
 </html>
