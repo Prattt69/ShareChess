@@ -1,137 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ShareChess.com - Daily Puzzle</title>
-  <meta property="og:title" content="Solve Chess Puzzles Daily - ShareChess.com" />
-  <meta property="og:description" content="Challenge yourself with a tricky chess puzzle every day. Solve and share with your friends!" />
-  <meta property="og:image" content="https://sharechess.com/og-image.jpg" />
-  <meta property="og:url" content="https://sharechess.com" />
-  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 10px;
-    }
-    #board {
-      width: 350px;
-      margin: 20px 0;
-    }
-    .status {
-      font-size: 1.2em;
-      color: green;
-      margin-bottom: 10px;
-    }
-    .meta {
-      font-size: 0.95em;
-      color: #555;
-      margin-top: -10px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    .actions {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    button, .share-link {
-      padding: 8px 16px;
-      font-size: 1em;
-      margin: 5px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-      background-color: #333;
-      color: #fff;
-      text-decoration: none;
-    }
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.5">
+  <style type="text/css">
+    body {background-color: #f1f1f7}
+    span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-  <h1>♟️ Daily Chess Puzzle</h1>
-  <div class="status" id="status">Loading puzzle...</div>
-  <div class="meta" id="puzzleMeta"></div>
-  <div id="board"></div>
-  <div class="actions">
-    <button onclick="loadRandomPuzzle()">🔁 Load Another Puzzle</button>
-    <a class="share-link" id="shareLink" href="#" target="_blank">🔗 Share This Puzzle</a>
-  </div>
-
-  <script src="https://unpkg.com/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-  <script>
-    let board, gameObj, solution = [], moveIndex = 0, startFen = "", puzzleId = "";
-
-    async function loadRandomPuzzle() {
-      try {
-        document.getElementById("status").textContent = "Loading puzzle...";
-        document.getElementById("puzzleMeta").textContent = "";
-
-        const res = await fetch("https://lichess.org/api/puzzle/daily");
-        const data = await res.json();
-
-        const { game, puzzle } = data;
-        startFen = game.fen;
-        solution = puzzle.solution;
-        puzzleId = puzzle.id;
-
-        gameObj = new Chess(startFen);
-        moveIndex = 0;
-
-        board = Chessboard("board", {
-          position: startFen,
-          draggable: true,
-          onDrop: onDrop
-        });
-
-        document.getElementById("status").textContent = "Solve the puzzle!";
-        document.getElementById("puzzleMeta").textContent = `Rating: ${puzzle.rating} | Tries: ${puzzle.attempts} | Themes: ${puzzle.themes?.join(", ") || 'N/A'}`;
-
-        const shareURL = `https://lichess.org/training/${puzzleId}`;
-        document.getElementById("shareLink").href = shareURL;
-      } catch (error) {
-        document.getElementById("status").textContent = "⚠️ Failed to load puzzle.";
-        console.error(error);
-      }
-    }
-
-    function onDrop(source, target) {
-      const move = gameObj.move({ from: source, to: target, promotion: 'q' });
-      if (move === null) return 'snapback';
-
-      const expectedMove = new Chess(startFen);
-      for (let i = 0; i < moveIndex; i++) expectedMove.move(solution[i]);
-      const expected = expectedMove.move(solution[moveIndex]);
-
-      if (move.san === expected.san) {
-        moveIndex++;
-        if (moveIndex === solution.length) {
-          document.getElementById("status").textContent = "🎉 Puzzle Solved!";
-        } else {
-          setTimeout(() => {
-            gameObj.move(solution[moveIndex]);
-            board.position(gameObj.fen());
-            moveIndex++;
-          }, 500);
-        }
-      } else {
-        gameObj.undo();
-        return 'snapback';
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', loadRandomPuzzle);
-  </script>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;!DOCTYPE html&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;html lang="en"&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;head&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;ShareChess.com - Daily Puzzle&lt;/title&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta property="og:title" content="Solve Chess Puzzles Daily - ShareChess.com" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta property="og:description" content="Challenge yourself with a tricky chess puzzle every day. Solve and share with your friends!" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta property="og:image" content="https://sharechess.com/og-image.jpg" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta property="og:url" content="https://sharechess.com" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" /&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>body {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>font-family: 'Segoe UI', sans-serif;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>background: #f4f4f9;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>flex-direction: column;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>align-items: center;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>justify-content: flex-start;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>min-height: 100vh;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin: 0;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>padding: 20px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>h1 {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>#board {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>width: 350px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin: 20px 0;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>.status {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>font-size: 1.2em;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>color: green;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>.meta {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>font-size: 0.95em;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>color: #555;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin-top: -10px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>text-align: center;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>.actions {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>flex-direction: column;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>align-items: center;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>button, .share-link {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>padding: 8px 16px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>font-size: 1em;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>margin: 5px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>cursor: pointer;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>border: none;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 5px;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>background-color: #333;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>color: #fff;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>text-decoration: none;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>#copied {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>font-size: 0.9em;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>color: #007700;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>display: none;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;/head&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;body&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h1&gt;♟️ Daily Chess Puzzle&lt;/h1&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="status" id="status"&gt;Loading puzzle...&lt;/div&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="meta" id="puzzleMeta"&gt;&lt;/div&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="board"&gt;&lt;/div&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="actions"&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="loadHardcodedPuzzle()"&gt;🔁 Load Puzzle&lt;/button&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="sharePuzzle()"&gt;🔗 Share This Puzzle&lt;/button&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="copied"&gt;✅ Link copied!&lt;/div&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/chess.js@0.13.4/chess.min.js"&gt;&lt;/script&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"&gt;&lt;/script&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>let board, gameObj, solution = [], moveIndex = 0, startFen = "";</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>function loadHardcodedPuzzle() {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>// Hardcoded fallback puzzle (lichess.org/training/Wnmk9)</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>moveIndex = 0;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>gameObj = new Chess(startFen);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>board = Chessboard("board", {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>position: startFen,</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>draggable: true,</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>onDrop: onDrop</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>});</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById("status").textContent = "Solve the puzzle!";</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>function onDrop(source, target) {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>const move = gameObj.move({ from: source, to: target, promotion: 'q' });</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>if (move === null) return 'snapback';</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>const expectedMove = new Chess(startFen);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>for (let i = 0; i &lt; moveIndex; i++) expectedMove.move(solution[i]);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>const expected = expectedMove.move(solution[moveIndex]);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>if (move.san === expected.san) {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>moveIndex++;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>if (moveIndex === solution.length) {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">          </span>document.getElementById("status").textContent = "🎉 Puzzle Solved!";</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>} else {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">          </span>setTimeout(() =&gt; {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">            </span>gameObj.move(solution[moveIndex]);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">            </span>board.position(gameObj.fen());</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">            </span>moveIndex++;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">          </span>}, 500);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>gameObj.undo();</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>return 'snapback';</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>function sharePuzzle() {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>const shareURL = window.location.href;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>navigator.clipboard.writeText(shareURL).then(() =&gt; {</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>const copied = document.getElementById("copied");</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>copied.style.display = 'block';</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">        </span>setTimeout(() =&gt; copied.style.display = 'none', 2000);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">      </span>});</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>}</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7; min-height: 32.0px"><span class="s1"></span><br></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">    </span>window.addEventListener('DOMContentLoaded', loadHardcodedPuzzle);</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;/body&gt;</span></h1>
+<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; font: 24.0px 'Apple Color Emoji'; -webkit-text-stroke: #000000; background-color: #f1f1f7"><span class="s1">&lt;/html&gt;</span></h1>
 </body>
 </html>
