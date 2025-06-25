@@ -38,44 +38,52 @@
   <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const puzzle = {
-        fen: "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/3P1N2/PPP2PPP/RNBQKB1R w KQkq - 2 4",
-        solution: ["d3d4", "e5d4", "f3d4"]
-      };
+    async function loadPuzzle() {
+      try {
+        const res = await fetch('https://corsproxy.io/?https://lichess.org/api/puzzle/daily');
+        const data = await res.json();
 
-      const game = new Chess(puzzle.fen);
-      let moveIndex = 0;
+        const fen = data.game.fen;
+        const solution = data.puzzle.solution;
 
-      const board = Chessboard("board", {
-        position: puzzle.fen,
-        draggable: true,
-        onDrop: (source, target) => {
-          const move = game.move({ from: source, to: target, promotion: 'q' });
-          if (move === null) return 'snapback';
+        const game = new Chess(fen);
+        let moveIndex = 0;
 
-          const expectedMove = new Chess(puzzle.fen);
-          for (let i = 0; i < moveIndex; i++) expectedMove.move(puzzle.solution[i]);
-          const expected = expectedMove.move(puzzle.solution[moveIndex]);
+        const board = Chessboard("board", {
+          position: fen,
+          draggable: true,
+          onDrop: (source, target) => {
+            const move = game.move({ from: source, to: target, promotion: 'q' });
+            if (move === null) return 'snapback';
 
-          if (move.san === expected.san) {
-            moveIndex++;
-            if (moveIndex === puzzle.solution.length) {
-              document.getElementById("status").textContent = "🎉 Puzzle Solved!";
+            const expectedMove = new Chess(fen);
+            for (let i = 0; i < moveIndex; i++) expectedMove.move(solution[i]);
+            const expected = expectedMove.move(solution[moveIndex]);
+
+            if (move.san === expected.san) {
+              moveIndex++;
+              if (moveIndex === solution.length) {
+                document.getElementById("status").textContent = "🎉 Puzzle Solved!";
+              } else {
+                setTimeout(() => {
+                  game.move(solution[moveIndex]);
+                  board.position(game.fen());
+                  moveIndex++;
+                }, 500);
+              }
             } else {
-              setTimeout(() => {
-                game.move(puzzle.solution[moveIndex]);
-                board.position(game.fen());
-                moveIndex++;
-              }, 500);
+              game.undo();
+              return 'snapback';
             }
-          } else {
-            game.undo();
-            return 'snapback';
           }
-        }
-      });
-    });
+        });
+      } catch (error) {
+        document.getElementById("status").textContent = "⚠️ Failed to load puzzle.";
+        console.error('Puzzle load error:', error);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadPuzzle);
   </script>
 </body>
 </html>
