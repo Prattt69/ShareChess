@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
   <meta property="og:description" content="Challenge yourself with a tricky chess puzzle every day. Solve and share with your friends!" />
   <meta property="og:image" content="https://sharechess.com/og-image.jpg" />
   <meta property="og:url" content="https://sharechess.com" />
-  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -75,39 +74,33 @@
     <div id="copied">✅ Link copied!</div>
   </div>
 
-  <script src="https://unpkg.com/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
   <script>
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
     function loadHardcodedPuzzle() {
-      console.log('Loading hardcoded puzzle...');
-      try {
-        if (typeof Chess === 'undefined' || typeof Chessboard === 'undefined') {
-          document.getElementById("status").textContent = "Error: Puzzle libraries not loaded.";
-          console.error("Chess.js or Chessboard.js not defined.");
-          return;
-        }
-
-        startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
-        solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
-        moveIndex = 0;
-
-        gameObj = new Chess(startFen);
-
-        board = Chessboard("board", {
-          position: startFen,
-          draggable: true,
-          onDrop: onDrop
-        });
-
-        document.getElementById("status").textContent = "Solve the puzzle!";
-        document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;
-        console.log('Puzzle loaded.');
-      } catch (err) {
-        console.error('Error while loading puzzle:', err);
-        document.getElementById("status").textContent = "Failed to load puzzle. Check console.";
+      console.log("Loading puzzle...");
+      if (typeof Chess === 'undefined' || typeof Chessboard === 'undefined') {
+        console.error("Chess.js or Chessboard.js not loaded correctly.");
+        document.getElementById("status").textContent = "Failed to load puzzle. Try again later.";
+        return;
       }
+
+      startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
+      solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
+      moveIndex = 0;
+
+      gameObj = new Chess(startFen);
+
+      board = Chessboard("board", {
+        position: startFen,
+        draggable: true,
+        onDrop: onDrop
+      });
+
+      document.getElementById("status").textContent = "Solve the puzzle!";
+      document.getElementById("puzzleMeta").textContent = `Rating: 1750 | Theme: Knight Sacrifice`;
     }
 
     function onDrop(source, target) {
@@ -147,7 +140,7 @@
     window.addEventListener('DOMContentLoaded', loadHardcodedPuzzle);
     setTimeout(() => {
       if (!document.getElementById("board").innerHTML.trim()) {
-        console.log('Fallback triggered: loading puzzle again...');
+        console.log("Fallback: manually invoking puzzle load...");
         loadHardcodedPuzzle();
       }
     }, 300);
