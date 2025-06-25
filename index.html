@@ -8,7 +8,10 @@
   <meta property="og:description" content="Challenge yourself with a tricky chess puzzle every day. Solve and share with your friends!" />
   <meta property="og:image" content="https://sharechess.com/og-image.jpg" />
   <meta property="og:url" content="https://sharechess.com" />
-  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+
+  <!-- ✅ Proper CSS CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
+  
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -74,10 +77,10 @@
     <div id="copied">✅ Link copied!</div>
   </div>
 
-  <!-- Scripts -->
+  <!-- ✅ Required JS libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
 
   <script>
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
@@ -98,7 +101,7 @@
         board = Chessboard("board", {
           position: startFen,
           draggable: true,
-          pieceTheme: "https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/img/chesspieces/wikipedia/{piece}.png",
+          pieceTheme: "https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/img/chesspieces/wikipedia/{piece}.png",
           onDrop: onDrop
         });
 
