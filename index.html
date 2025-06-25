@@ -9,9 +9,16 @@
   <meta property="og:image" content="https://sharechess.com/og-image.jpg" />
   <meta property="og:url" content="https://sharechess.com" />
 
-  <!-- ✅ Proper CSS CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css" />
-  
+  <!-- ✅ jQuery First -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- ✅ Correct CSS & JS for Chessboard.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/www/css/chessboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/www/js/chessboard.js"></script>
+
+  <!-- ✅ Chess.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -77,11 +84,6 @@
     <div id="copied">✅ Link copied!</div>
   </div>
 
-  <!-- ✅ Required JS libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
-
   <script>
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
@@ -93,6 +95,8 @@
         const puzzle = data.puzzle;
         const game = data.game;
 
+        if (!game.fen || !puzzle.solution) throw new Error("Invalid puzzle data");
+
         startFen = game.fen;
         solution = puzzle.solution;
         moveIndex = 0;
@@ -101,15 +105,14 @@
         board = Chessboard("board", {
           position: startFen,
           draggable: true,
-          pieceTheme: "https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/img/chesspieces/wikipedia/{piece}.png",
           onDrop: onDrop
         });
 
-        document.getElementById("status").textContent = "Solve the puzzle!";
+        document.getElementById("status").textContent = "✅ Solve the puzzle!";
         document.getElementById("puzzleMeta").textContent = `ID: ${puzzle.id} | Rating: ${puzzle.rating}`;
       } catch (err) {
         console.error(err);
-        document.getElementById("status").textContent = "Failed to load puzzle.";
+        document.getElementById("status").textContent = "❌ Failed to load puzzle.";
       }
     }
 
