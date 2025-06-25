@@ -9,15 +9,7 @@
   <meta property="og:image" content="https://sharechess.com/og-image.jpg" />
   <meta property="og:url" content="https://sharechess.com" />
 
-  <!-- ✅ jQuery First -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- ✅ Correct CSS & JS for Chessboard.js -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/www/css/chessboard.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/www/js/chessboard.js"></script>
-
-  <!-- ✅ Chess.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard.min.css" />
 
   <style>
     body {
@@ -84,18 +76,24 @@
     <div id="copied">✅ Link copied!</div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard.min.js"></script>
   <script>
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
     async function loadLichessPuzzle() {
       document.getElementById("status").textContent = "Loading puzzle...";
       try {
-        const res = await fetch("https://lichess.org/api/puzzle/daily");
+        const proxyUrl = "https://api.allorigins.win/raw?url=";
+        const lichessUrl = "https://lichess.org/api/puzzle/daily";
+        const res = await fetch(proxyUrl + encodeURIComponent(lichessUrl));
         const data = await res.json();
         const puzzle = data.puzzle;
         const game = data.game;
 
-        if (!game.fen || !puzzle.solution) throw new Error("Invalid puzzle data");
+        if (!game.fen || !puzzle.solution) {
+          throw new Error("Invalid puzzle data");
+        }
 
         startFen = game.fen;
         solution = puzzle.solution;
@@ -108,11 +106,11 @@
           onDrop: onDrop
         });
 
-        document.getElementById("status").textContent = "✅ Solve the puzzle!";
+        document.getElementById("status").textContent = "Solve the puzzle!";
         document.getElementById("puzzleMeta").textContent = `ID: ${puzzle.id} | Rating: ${puzzle.rating}`;
       } catch (err) {
         console.error(err);
-        document.getElementById("status").textContent = "❌ Failed to load puzzle.";
+        document.getElementById("status").textContent = "Failed to load puzzle.";
       }
     }
 
