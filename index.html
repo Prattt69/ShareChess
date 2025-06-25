@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +81,6 @@
     let board, gameObj, solution = [], moveIndex = 0, startFen = "";
 
     function loadHardcodedPuzzle() {
-      // Hardcoded fallback puzzle (lichess.org/training/Wnmk9)
       startFen = "r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4";
       solution = ["Ng5", "Qxg5", "Qf3", "Qf6", "Qxf6"];
       moveIndex = 0;
@@ -132,6 +132,11 @@
     }
 
     window.addEventListener('DOMContentLoaded', loadHardcodedPuzzle);
+    setTimeout(() => {
+      if (!document.getElementById("board").innerHTML.trim()) {
+        loadHardcodedPuzzle();
+      }
+    }, 150);
   </script>
 </body>
 </html>
