@@ -12,9 +12,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
     h1 {
       margin-bottom: 10px;
@@ -27,10 +28,37 @@
       font-size: 1.2em;
       color: green;
     }
+    input, textarea, select {
+      width: 90%;
+      max-width: 400px;
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 1em;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>🧩 Daily Chess Puzzle</h1>
+
+  <select id="presetSelector">
+    <option value="">-- Select Preset Puzzle --</option>
+    <option value="r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 4|Ng5,Qxg5,Qf3,Qf6,Qxf6">Knight Sacrifice</option>
+    <option value="8/8/8/8/8/8/8/R3K2R w KQ - 0 1|O-O-O">Castling Queen Side</option>
+    <option value="8/8/8/8/8/8/1q6/K7 w - - 0 1|Qxb2">Simple Capture</option>
+    <option value="rnbqkb1r/pppp1ppp/5n2/4p3/1P6/5NP1/P1PPP2P/RNBQKB1R w KQkq - 0 4|Nxe5">Tactic: Knight Fork</option>
+    <option value="r1bqk1nr/pppp1ppp/2n5/2b1p3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 2 4|Nxe5">Tactic: Remove Defender</option>
+  </select>
+
+  <input type="text" id="fenInput" placeholder="Enter FEN here..." />
+  <textarea id="solutionInput" rows="2" placeholder="Enter solution moves (e.g., Ng5,Qxg5,Qf3,Qf6,Qxf6)"></textarea>
+  <button onclick="loadManualPuzzle()">Load Puzzle</button>
+
   <div id="board"></div>
   <div class="status" id="status"></div>
 
@@ -38,52 +66,76 @@
   <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
   <script>
-    async function loadPuzzle() {
-      try {
-        const res = await fetch('https://corsproxy.io/?https://lichess.org/api/puzzle/daily');
-        const data = await res.json();
+    let board, game, fen, solution;
+    let moveIndex = 0;
 
-        const fen = data.game.fen;
-        const solution = data.puzzle.solution;
+    function saveToLocal() {
+      localStorage.setItem("fen", document.getElementById("fenInput").value);
+      localStorage.setItem("solution", document.getElementById("solutionInput").value);
+    }
 
-        const game = new Chess(fen);
-        let moveIndex = 0;
-
-        const board = Chessboard("board", {
-          position: fen,
-          draggable: true,
-          onDrop: (source, target) => {
-            const move = game.move({ from: source, to: target, promotion: 'q' });
-            if (move === null) return 'snapback';
-
-            const expectedMove = new Chess(fen);
-            for (let i = 0; i < moveIndex; i++) expectedMove.move(solution[i]);
-            const expected = expectedMove.move(solution[moveIndex]);
-
-            if (move.san === expected.san) {
-              moveIndex++;
-              if (moveIndex === solution.length) {
-                document.getElementById("status").textContent = "🎉 Puzzle Solved!";
-              } else {
-                setTimeout(() => {
-                  game.move(solution[moveIndex]);
-                  board.position(game.fen());
-                  moveIndex++;
-                }, 500);
-              }
-            } else {
-              game.undo();
-              return 'snapback';
-            }
-          }
-        });
-      } catch (error) {
-        document.getElementById("status").textContent = "⚠️ Failed to load puzzle.";
-        console.error('Puzzle load error:', error);
+    function loadFromLocal() {
+      const savedFen = localStorage.getItem("fen");
+      const savedSolution = localStorage.getItem("solution");
+      if (savedFen && savedSolution) {
+        document.getElementById("fenInput").value = savedFen;
+        document.getElementById("solutionInput").value = savedSolution;
       }
     }
 
-    window.addEventListener('DOMContentLoaded', loadPuzzle);
+    document.getElementById("presetSelector").addEventListener("change", (e) => {
+      const val = e.target.value;
+      if (!val) return;
+      const [presetFen, presetMoves] = val.split('|');
+      document.getElementById("fenInput").value = presetFen;
+      document.getElementById("solutionInput").value = presetMoves;
+      saveToLocal();
+    });
+
+    function loadManualPuzzle() {
+      fen = document.getElementById("fenInput").value.trim();
+      solution = document.getElementById("solutionInput").value.trim().split(',');
+      saveToLocal();
+
+      game = new Chess(fen);
+      moveIndex = 0;
+
+      board = Chessboard("board", {
+        position: fen,
+        draggable: true,
+        onDrop: (source, target) => {
+          const move = game.move({ from: source, to: target, promotion: 'q' });
+          if (move === null) return 'snapback';
+
+          const expectedMove = new Chess(fen);
+          for (let i = 0; i < moveIndex; i++) expectedMove.move(solution[i]);
+          const expected = expectedMove.move(solution[moveIndex]);
+
+          if (move.san === expected.san) {
+            moveIndex++;
+            if (moveIndex === solution.length) {
+              document.getElementById("status").textContent = "🎉 Puzzle Solved!";
+            } else {
+              setTimeout(() => {
+                game.move(solution[moveIndex]);
+                board.position(game.fen());
+                moveIndex++;
+              }, 500);
+            }
+          } else {
+            game.undo();
+            return 'snapback';
+          }
+        }
+      });
+
+      document.getElementById("status").textContent = "";
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFromLocal();
+      loadManualPuzzle();
+    });
   </script>
 </body>
 </html>
