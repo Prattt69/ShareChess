@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShareChess.com - Daily Puzzle</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #board {
+      width: 350px;
+      margin: 20px 0;
+    }
+    .status {
+      font-size: 1.2em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧩 Daily Chess Puzzle</h1>
+  <div id="board"></div>
+  <div class="status" id="status"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const puzzle = {
+        fen: "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/3P1N2/PPP2PPP/RNBQKB1R w KQkq - 2 4",
+        solution: ["d3d4", "e5d4", "f3d4"]
+      };
+
+      const game = new Chess(puzzle.fen);
+      let moveIndex = 0;
+
+      const board = Chessboard("board", {
+        position: puzzle.fen,
+        draggable: true,
+        onDrop: (source, target) => {
+          const move = game.move({ from: source, to: target, promotion: 'q' });
+
+          if (move === null) return 'snapback';
+
+          const expectedMove = new Chess(puzzle.fen);
+          for (let i = 0; i < moveIndex; i++) expectedMove.move(puzzle.solution[i]);
+          const expected = expectedMove.move(puzzle.solution[moveIndex]);
+
+          if (move.san === expected.san) {
+            moveIndex++;
+            if (moveIndex === puzzle.solution.length) {
+              document.getElementById("status").textContent = "🎉 Puzzle Solved!";
+            } else {
+              setTimeout(() => {
+                game.move(puzzle.solution[moveIndex]);
+                board.position(game.fen());
+                moveIndex++;
+              }, 500);
+            }
+          } else {
+            game.undo();
+            return 'snapback';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
